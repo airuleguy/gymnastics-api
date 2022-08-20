@@ -6,37 +6,46 @@ import {
   Patch,
   Param,
   Delete,
+  NotFoundException,
+  HttpCode,
 } from '@nestjs/common';
 import { ClubsService } from './clubs.service';
 import { CreateClubDto } from './dto/create-club.dto';
 import { UpdateClubDto } from './dto/update-club.dto';
+import { Club } from './entities/club.entity';
 
 @Controller('clubs')
 export class ClubsController {
   constructor(private readonly clubsService: ClubsService) {}
 
   @Post()
-  create(@Body() createClubDto: CreateClubDto) {
-    return this.clubsService.create(createClubDto);
+  async create(@Body() createClubDto: CreateClubDto) {
+    return this.clubsService.create(createClubDto as Club);
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.clubsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.clubsService.findOne(+id);
+  async findOne(@Param('id') id: number) {
+    return this.clubsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateClubDto: UpdateClubDto) {
-    return this.clubsService.update(+id, updateClubDto);
+  async update(@Param('id') id: number, @Body() updateClubDto: UpdateClubDto) {
+    const toEdit: Club = await this.clubsService.findOne(id);
+
+    if (!toEdit) {
+      throw new NotFoundException('No Club was found with the provided ID');
+    }
+
+    return this.clubsService.update(id, updateClubDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.clubsService.remove(+id);
+  async remove(@Param('id') id: number) {
+    this.clubsService.remove(id);
   }
 }

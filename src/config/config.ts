@@ -1,3 +1,6 @@
+import { Gymnast } from 'src/gymnasts/entities/gymnast.entity';
+import { Club } from '../clubs/entities/club.entity';
+
 export const configuration = () => ({
   database: {
     type: 'postgres',
@@ -8,6 +11,6 @@ export const configuration = () => ({
     database: process.env.POSTGRES_DATABASE,
     logging: process.env.POSTGRES_LOGGING,
     synchronize: true,
-    autoLoadEntities: true,
+    entities: [Club, Gymnast],
   },
 });

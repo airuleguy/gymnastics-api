@@ -1,26 +1,37 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateClubDto } from './dto/create-club.dto';
 import { UpdateClubDto } from './dto/update-club.dto';
+import { Club } from './entities/club.entity';
 
 @Injectable()
 export class ClubsService {
-  create(createClubDto: CreateClubDto) {
-    return 'This action adds a new club';
+  constructor(
+    @InjectRepository(Club)
+    private clubsRepository: Repository<Club>,
+  ) {}
+
+  create(newClub: CreateClubDto) {
+    return this.clubsRepository.save(newClub as Club);
   }
 
   findAll() {
-    return `This action returns all clubs`;
+    return this.clubsRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} club`;
+    return this.clubsRepository.findOneBy({ id });
   }
 
   update(id: number, updateClubDto: UpdateClubDto) {
-    return `This action updates a #${id} club`;
+    return this.clubsRepository.save({
+      ...updateClubDto,
+      id: id,
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} club`;
+    this.clubsRepository.delete(id);
   }
 }
