@@ -7,13 +7,11 @@ import { AppService } from './app.service';
 import { configuration } from './config/config';
 import { DatabaseConfig } from './config/database.config';
 
-import { TournamentModule } from './tournament/tournament.module';
 import { ClubsModule } from './clubs/clubs.module';
 import { GymnastsModule } from './gymnasts/gymnasts.module';
 
 @Module({
   imports: [
-    TournamentModule,
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],
