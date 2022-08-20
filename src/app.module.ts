@@ -7,12 +7,12 @@ import { AppService } from './app.service';
 import { configuration } from './config/config';
 import { DatabaseConfig } from './config/database.config';
 
-import { GymnastModule } from './gymnasts/gymnasts.module';
 import { TournamentModule } from './tournament/tournament.module';
+import { ClubsModule } from './clubs/clubs.module';
+import { GymnastsModule } from './gymnasts/gymnasts.module';
 
 @Module({
   imports: [
-    GymnastModule,
     TournamentModule,
     ConfigModule.forRoot({
       isGlobal: true,
@@ -23,6 +23,8 @@ import { TournamentModule } from './tournament/tournament.module';
       imports: [ConfigModule],
       useClass: DatabaseConfig,
     }),
+    ClubsModule,
+    GymnastsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

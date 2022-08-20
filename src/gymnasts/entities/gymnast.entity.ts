@@ -1,6 +1,6 @@
-import { Branches } from '../branches/branches.enum';
-import { Club } from '../clubs/clubs.entity';
-import { Genders } from '../genders/genders.enum';
+import { Branches } from '../../branches/branches.enum';
+import { Club } from '../../clubs/entities/club.entity';
+import { Genders } from '../../genders/genders.enum';
 import {
   Column,
   CreateDateColumn,

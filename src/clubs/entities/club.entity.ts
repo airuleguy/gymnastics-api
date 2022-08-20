@@ -1,5 +1,5 @@
-import { FederationTypes } from '../federation_types/federation_types.enum';
-import { Gymnast } from '../gymnasts/gymnasts.entity';
+import { FederationTypes } from '../../federation_types/federation_types.enum';
+import { Gymnast } from '../../gymnasts/entities/gymnast.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({
