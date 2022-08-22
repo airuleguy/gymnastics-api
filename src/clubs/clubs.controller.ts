@@ -7,7 +7,6 @@ import {
   Param,
   Delete,
   NotFoundException,
-  HttpCode,
 } from '@nestjs/common';
 import { ClubsService } from './clubs.service';
 import { CreateClubDto } from './dto/create-club.dto';
@@ -19,33 +18,33 @@ export class ClubsController {
   constructor(private readonly clubsService: ClubsService) {}
 
   @Post()
-  async create(@Body() createClubDto: CreateClubDto) {
+  create(@Body() createClubDto: CreateClubDto) {
     return this.clubsService.create(createClubDto as Club);
   }
 
   @Get()
-  async findAll() {
+  findAll() {
     return this.clubsService.findAll();
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: number) {
+  findOne(@Param('id') id: number) {
     return this.clubsService.findOne(id);
   }
 
   @Patch(':id')
-  async update(@Param('id') id: number, @Body() updateClubDto: UpdateClubDto) {
-    const toEdit: Club = await this.clubsService.findOne(id);
-
-    if (!toEdit) {
-      throw new NotFoundException('No Club was found with the provided ID');
-    }
+  update(@Param('id') id: number, @Body() updateClubDto: UpdateClubDto) {
+    this.clubsService.findOne(id).then((club) => {
+      if (!club) {
+        throw new NotFoundException('No Club was found with the provided ID');
+      }
+    });
 
     return this.clubsService.update(id, updateClubDto);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: number) {
+  remove(@Param('id') id: number) {
     this.clubsService.remove(id);
   }
 }

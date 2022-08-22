@@ -1,14 +1,36 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { GymnastsService } from './gymnasts.service';
 import { CreateGymnastDto } from './dto/create-gymnast.dto';
 import { UpdateGymnastDto } from './dto/update-gymnast.dto';
+import { Club } from '../clubs/entities/club.entity';
+import { ClubsService } from '../clubs/clubs.service';
 
 @Controller('gymnasts')
 export class GymnastsController {
-  constructor(private readonly gymnastsService: GymnastsService) {}
+  constructor(
+    private readonly gymnastsService: GymnastsService,
+    private readonly clubsService: ClubsService,
+  ) {}
 
   @Post()
   create(@Body() createGymnastDto: CreateGymnastDto) {
+    if (createGymnastDto.club) {
+      if (!this.validateClubExists(createGymnastDto.club)) {
+        throw new BadRequestException(
+          'There is no Club corresponding to given ID',
+        );
+      }
+    }
     return this.gymnastsService.create(createGymnastDto);
   }
 
@@ -24,11 +46,23 @@ export class GymnastsController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateGymnastDto: UpdateGymnastDto) {
+    this.gymnastsService.findOne(+id).then((gymnast) => {
+      if (!gymnast) {
+        throw new NotFoundException(
+          'No Gymnast was found with the provided ID',
+        );
+      }
+    });
+
     return this.gymnastsService.update(+id, updateGymnastDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.gymnastsService.remove(+id);
+  }
+
+  validateClubExists(club: Partial<Club>): boolean {
+    return this.clubsService.findOne(club.id) ? true : false;
   }
 }
