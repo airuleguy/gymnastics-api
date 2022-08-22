@@ -1,6 +1,13 @@
 import { FederationTypes } from '../../federation_types/federation_types.enum';
 import { Gymnast } from '../../gymnasts/entities/gymnast.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Exclude } from '@nestjs/class-transformer';
 
 @Entity({
   name: 'clubs',
@@ -34,4 +41,7 @@ export class Club {
     cascade: false,
   })
   gymnasts: Gymnast[];
+
+  @CreateDateColumn()
+  dateCreated: Date;
 }

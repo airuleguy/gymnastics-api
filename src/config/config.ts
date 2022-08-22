@@ -1,4 +1,4 @@
-import { Gymnast } from 'src/gymnasts/entities/gymnast.entity';
+import { Gymnast } from '../gymnasts/entities/gymnast.entity';
 import { Club } from '../clubs/entities/club.entity';
 
 export const configuration = () => ({

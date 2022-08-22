@@ -17,6 +17,6 @@ export class CreateClubDto {
   @IsIn([FederationTypes.A, FederationTypes.B])
   federationType: FederationTypes;
 
-  @ApiProperty({ type: [Gymnast] })
+  @ApiProperty({ type: [Gymnast], nullable: true })
   gymnasts?: Gymnast[];
 }

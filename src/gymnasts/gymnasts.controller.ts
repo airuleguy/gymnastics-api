@@ -12,8 +12,7 @@ import {
 import { GymnastsService } from './gymnasts.service';
 import { CreateGymnastDto } from './dto/create-gymnast.dto';
 import { UpdateGymnastDto } from './dto/update-gymnast.dto';
-import { Club } from '../clubs/entities/club.entity';
-import { ClubsService } from '../clubs/clubs.service';
+import { ClubsService } from 'src/clubs/clubs.service';
 
 @Controller('gymnasts')
 export class GymnastsController {
@@ -23,9 +22,10 @@ export class GymnastsController {
   ) {}
 
   @Post()
-  create(@Body() createGymnastDto: CreateGymnastDto) {
+  async create(@Body() createGymnastDto: CreateGymnastDto) {
     if (createGymnastDto.club) {
-      if (!this.validateClubExists(createGymnastDto.club)) {
+      const found = await this.clubsService.findOne(createGymnastDto.club.id);
+      if (!found) {
         throw new BadRequestException(
           'There is no Club corresponding to given ID',
         );
@@ -60,9 +60,5 @@ export class GymnastsController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.gymnastsService.remove(+id);
-  }
-
-  validateClubExists(club: Partial<Club>): boolean {
-    return this.clubsService.findOne(club.id) ? true : false;
   }
 }

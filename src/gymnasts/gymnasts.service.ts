@@ -11,6 +11,7 @@ export class GymnastsService {
     @InjectRepository(Gymnast)
     private gymnastRepository: Repository<Gymnast>,
   ) {}
+
   create(createGymnastDto: CreateGymnastDto) {
     return this.gymnastRepository.save(createGymnastDto as Gymnast);
   }

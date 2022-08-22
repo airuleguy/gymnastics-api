@@ -48,20 +48,17 @@ export class Gymnast {
   email: string;
 
   @Column({
-    type: Date,
+    type: 'timestamptz',
     nullable: false,
   })
   birthDate: Date;
 
-  @CreateDateColumn({
-    type: Date,
-    nullable: false,
-  })
+  @CreateDateColumn()
   dateCreated: Date;
 
   @Index()
   @Column({
-    type: Date,
+    type: 'timestamptz',
     nullable: false,
   })
   medicalRecordDueDate: Date;
