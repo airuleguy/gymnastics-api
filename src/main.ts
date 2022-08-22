@@ -6,6 +6,7 @@ import {
 } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import { TypeORMExceptionFilter } from './exceptions/filters/exceptions.filters.db';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -14,6 +15,7 @@ async function bootstrap() {
   );
 
   app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalFilters(new TypeORMExceptionFilter());
 
   const config = new DocumentBuilder()
     .setTitle('Gymnasts API')
