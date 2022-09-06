@@ -1,4 +1,4 @@
 export enum Branches {
   ARTISTIC = 'artistic',
-  OLYMPIC = 'olympic',
+  AEROBIC = 'aerobic',
 }

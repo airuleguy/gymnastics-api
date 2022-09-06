@@ -35,8 +35,8 @@ export class CreateGymnastDto {
   @IsIn([Genders.FEMALE, Genders.MALE])
   gender: Genders;
 
-  @ApiProperty({ enum: [Branches.ARTISTIC, Branches.OLYMPIC] })
-  @IsIn([Branches.ARTISTIC, Branches.OLYMPIC])
+  @ApiProperty({ enum: [Branches.ARTISTIC, Branches.AEROBIC] })
+  @IsIn([Branches.ARTISTIC, Branches.AEROBIC])
   branch: Branches;
 
   @ApiProperty({ type: Club })
