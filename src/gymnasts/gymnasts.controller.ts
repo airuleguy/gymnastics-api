@@ -12,7 +12,7 @@ import {
 import { GymnastsService } from './gymnasts.service';
 import { CreateGymnastDto } from './dto/create-gymnast.dto';
 import { UpdateGymnastDto } from './dto/update-gymnast.dto';
-import { ClubsService } from 'src/clubs/clubs.service';
+import { ClubsService } from '../clubs/clubs.service';
 
 @Controller('gymnasts')
 export class GymnastsController {
