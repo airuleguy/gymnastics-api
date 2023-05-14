@@ -15,7 +15,7 @@ import { GymnastsModule } from './gymnasts/gymnasts.module';
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],
-      envFilePath: ['.env', '.local.env', '.production.env'],
+      envFilePath: `${process.cwd()}/config/env/${process.env.NODE_ENV}.env`,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
