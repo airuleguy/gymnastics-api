@@ -1,6 +1,6 @@
 import { IsIn, IsString, MaxLength } from '@nestjs/class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { Gymnast } from '../../gymnasts/entities/gymnast.entity';
+import { Athlete } from '../../athletes/entities/athlete.entity';
 import { FederationTypes } from '../../federation_types/federation_types.enum';
 
 export class CreateClubDto {
@@ -17,6 +17,6 @@ export class CreateClubDto {
   @IsIn([FederationTypes.A, FederationTypes.B])
   federationType: FederationTypes;
 
-  @ApiProperty({ type: [Gymnast], nullable: true })
-  gymnasts?: Gymnast[];
+  @ApiProperty({ type: [Athlete], nullable: true })
+  athletes?: Athlete[];
 }

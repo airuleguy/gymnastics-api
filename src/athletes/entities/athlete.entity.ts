@@ -11,10 +11,10 @@ import {
 } from 'typeorm';
 
 @Entity({
-  name: 'gymnasts',
+  name: 'athlete',
 })
 @Index(['club', 'branch'])
-export class Gymnast {
+export class Athlete {
   @PrimaryGeneratedColumn()
   id: number;
 

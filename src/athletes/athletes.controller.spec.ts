@@ -1,24 +1,24 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { GymnastsController } from './gymnasts.controller';
-import { GymnastsService } from './gymnasts.service';
+import { AthletesController as AthletesController } from './athletes.controller';
+import { AthletesService } from './athletes.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Gymnast } from './entities/gymnast.entity';
+import { Athlete } from './entities/athlete.entity';
 import { Repository } from 'typeorm';
 import { ClubsService } from '../clubs/clubs.service';
 import { Club } from '../clubs/entities/club.entity';
 
-describe('GymnastsController', () => {
-  let controller: GymnastsController;
-  let gymnastMockRepository: Repository<Gymnast>;
+describe('AthletesController', () => {
+  let controller: AthletesController;
+  let gymnastMockRepository: Repository<Athlete>;
   let clubMockRepository: Repository<Club>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [GymnastsController],
+      controllers: [AthletesController],
       providers: [
-        GymnastsService,
+        AthletesService,
         {
-          provide: getRepositoryToken(Gymnast),
+          provide: getRepositoryToken(Athlete),
           useValue: gymnastMockRepository,
         },
         ClubsService,
@@ -29,7 +29,7 @@ describe('GymnastsController', () => {
       ],
     }).compile();
 
-    controller = module.get<GymnastsController>(GymnastsController);
+    controller = module.get<AthletesController>(AthletesController);
   });
 
   it('should be defined', () => {

@@ -9,20 +9,20 @@ import {
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
-import { GymnastsService } from './gymnasts.service';
-import { CreateGymnastDto } from './dto/create-gymnast.dto';
-import { UpdateGymnastDto } from './dto/update-gymnast.dto';
+import { AthletesService } from './athletes.service';
+import { CreateAthleteDto } from './dto/create-athlete.dto';
+import { UpdateAthleteDto } from './dto/update-athlete.dto';
 import { ClubsService } from '../clubs/clubs.service';
 
-@Controller('gymnasts')
-export class GymnastsController {
+@Controller('athletes')
+export class AthletesController {
   constructor(
-    private readonly gymnastsService: GymnastsService,
+    private readonly gymnastsService: AthletesService,
     private readonly clubsService: ClubsService,
   ) {}
 
   @Post()
-  async create(@Body() createGymnastDto: CreateGymnastDto) {
+  async create(@Body() createGymnastDto: CreateAthleteDto) {
     if (createGymnastDto.club) {
       const found = await this.clubsService.findOne(createGymnastDto.club.id);
       if (!found) {
@@ -45,7 +45,7 @@ export class GymnastsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateGymnastDto: UpdateGymnastDto) {
+  update(@Param('id') id: string, @Body() updateGymnastDto: UpdateAthleteDto) {
     this.gymnastsService.findOne(+id).then((gymnast) => {
       if (!gymnast) {
         throw new NotFoundException(

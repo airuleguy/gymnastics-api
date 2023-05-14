@@ -1,5 +1,5 @@
 import { FederationTypes } from '../../federation_types/federation_types.enum';
-import { Gymnast } from '../../gymnasts/entities/gymnast.entity';
+import { Athlete } from '../../athletes/entities/athlete.entity';
 import {
   Column,
   CreateDateColumn,
@@ -7,7 +7,6 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Exclude } from '@nestjs/class-transformer';
 
 @Entity({
   name: 'clubs',
@@ -37,10 +36,10 @@ export class Club {
   })
   federationType: FederationTypes;
 
-  @OneToMany(() => Gymnast, (gymnast: Gymnast) => gymnast.id, {
+  @OneToMany(() => Athlete, (athlete: Athlete) => athlete.id, {
     cascade: false,
   })
-  gymnasts: Gymnast[];
+  athletes: Athlete[];
 
   @CreateDateColumn()
   dateCreated: Date;

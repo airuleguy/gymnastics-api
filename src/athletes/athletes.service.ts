@@ -1,19 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateGymnastDto } from './dto/create-gymnast.dto';
-import { UpdateGymnastDto } from './dto/update-gymnast.dto';
-import { Gymnast } from './entities/gymnast.entity';
+import { CreateAthleteDto } from './dto/create-athlete.dto';
+import { UpdateAthleteDto } from './dto/update-athlete.dto';
+import { Athlete } from './entities/athlete.entity';
 
 @Injectable()
-export class GymnastsService {
+export class AthletesService {
   constructor(
-    @InjectRepository(Gymnast)
-    private gymnastRepository: Repository<Gymnast>,
+    @InjectRepository(Athlete)
+    private gymnastRepository: Repository<Athlete>,
   ) {}
 
-  create(createGymnastDto: CreateGymnastDto) {
-    return this.gymnastRepository.save(createGymnastDto as Gymnast);
+  create(createGymnastDto: CreateAthleteDto) {
+    return this.gymnastRepository.save(createGymnastDto as Athlete);
   }
 
   findAll() {
@@ -24,7 +24,7 @@ export class GymnastsService {
     return this.gymnastRepository.findOneBy({ id });
   }
 
-  update(id: number, updateGymnastDto: UpdateGymnastDto) {
+  update(id: number, updateGymnastDto: UpdateAthleteDto) {
     return this.gymnastRepository.save({
       ...updateGymnastDto,
       id: id,

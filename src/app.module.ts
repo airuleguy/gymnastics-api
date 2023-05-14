@@ -8,7 +8,7 @@ import { configuration } from './config/config';
 import { DatabaseConfig } from './config/database.config';
 
 import { ClubsModule } from './clubs/clubs.module';
-import { GymnastsModule } from './gymnasts/gymnasts.module';
+import { AthletesModule } from './athletes/athletes.module';
 
 @Module({
   imports: [
@@ -22,7 +22,7 @@ import { GymnastsModule } from './gymnasts/gymnasts.module';
       useClass: DatabaseConfig,
     }),
     ClubsModule,
-    GymnastsModule,
+    AthletesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
