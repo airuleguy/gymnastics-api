@@ -5,12 +5,11 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 export const configuration = () => ({
   database: {
     type: 'postgres',
-    host: process.env.POSTGRES_HOST,
+    host: process.env.POSTGRES_HOST || 'postgres-db',
     port: process.env.POSTGRES_PORT,
     username: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,
-    database: process.env.POSTGRES_DATABASE,
-    logging: process.env.POSTGRES_LOGGING,
+    database: process.env.POSTGRES_DB,
     synchronize: true,
     namingStrategy: new SnakeNamingStrategy(),
     entities: [Club, Gymnast],
