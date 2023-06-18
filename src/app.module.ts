@@ -15,7 +15,7 @@ import { AthletesModule } from './athletes/athletes.module';
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],
-      envFilePath: `${process.cwd()}/config/env/${process.env.NODE_ENV}.env`,
+      envFilePath: `.env/${process.env.NODE_ENV}.env`,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
