@@ -43,4 +43,10 @@ export class Club {
 
   @CreateDateColumn()
   dateCreated: Date;
+
+  @Column({
+    type: String,
+    nullable: true,
+  })
+  logoUrl: string;
 }
