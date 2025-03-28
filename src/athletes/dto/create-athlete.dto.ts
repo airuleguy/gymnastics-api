@@ -25,10 +25,10 @@ export class CreateAthleteDto {
   @MaxLength(75)
   email: string;
 
-  @ApiProperty({ type: Date })
-  birthDate: Date;
+  @ApiProperty({ type: Date, required: false })
+  birthDate?: Date;
 
-  @ApiProperty({ type: Date })
+  @ApiProperty({ type: Date, required: false })
   medicalRecordDueDate?: Date;
 
   @ApiProperty({ enum: [Genders.FEMALE, Genders.MALE] })

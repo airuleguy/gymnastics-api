@@ -6,59 +6,49 @@ import {
   Patch,
   Param,
   Delete,
-  NotFoundException,
-  BadRequestException,
+  Query,
 } from '@nestjs/common';
 import { AthletesService } from './athletes.service';
 import { CreateAthleteDto } from './dto/create-athlete.dto';
 import { UpdateAthleteDto } from './dto/update-athlete.dto';
-import { ClubsService } from '../clubs/clubs.service';
+import { PaginationQueryDto } from '../common/dto/pagination.dto';
 
 @Controller('athletes')
 export class AthletesController {
   constructor(
-    private readonly gymnastsService: AthletesService,
-    private readonly clubsService: ClubsService,
+    private readonly athletesService: AthletesService,
   ) {}
 
   @Post()
-  async create(@Body() createGymnastDto: CreateAthleteDto) {
-    if (createGymnastDto.club) {
-      const found = await this.clubsService.findOne(createGymnastDto.club.id);
-      if (!found) {
-        throw new BadRequestException(
-          'There is no Club corresponding to given ID',
-        );
-      }
-    }
-    return this.gymnastsService.create(createGymnastDto);
+  create(@Body() createAthleteDto: CreateAthleteDto) {
+    return this.athletesService.create(createAthleteDto);
   }
 
   @Get()
-  findAll() {
-    return this.gymnastsService.findAll();
+  findAll(@Query() query: PaginationQueryDto) {
+    return this.athletesService.findAll(query);
+  }
+
+  @Get('club/:clubId')
+  findByClubId(
+    @Param('clubId') clubId: string,
+    @Query() query: PaginationQueryDto
+  ) {
+    return this.athletesService.findByClubId(+clubId, query);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.gymnastsService.findOne(+id);
+    return this.athletesService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateGymnastDto: UpdateAthleteDto) {
-    this.gymnastsService.findOne(+id).then((gymnast) => {
-      if (!gymnast) {
-        throw new NotFoundException(
-          'No Gymnast was found with the provided ID',
-        );
-      }
-    });
-
-    return this.gymnastsService.update(+id, updateGymnastDto);
+  update(@Param('id') id: string, @Body() updateAthleteDto: UpdateAthleteDto) {
+    return this.athletesService.update(+id, updateAthleteDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.gymnastsService.remove(+id);
+    return this.athletesService.remove(+id);
   }
 }

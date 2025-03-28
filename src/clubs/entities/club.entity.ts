@@ -36,7 +36,7 @@ export class Club {
   })
   federationType: FederationTypes;
 
-  @OneToMany(() => Athlete, (athlete: Athlete) => athlete.id, {
+  @OneToMany(() => Athlete, (athlete: Athlete) => athlete.club, {
     cascade: false,
   })
   athletes: Athlete[];

@@ -7,11 +7,14 @@ import {
   Param,
   Delete,
   NotFoundException,
+  BadRequestException,
+  Query,
 } from '@nestjs/common';
 import { ClubsService } from './clubs.service';
 import { CreateClubDto } from './dto/create-club.dto';
 import { UpdateClubDto } from './dto/update-club.dto';
 import { Club } from './entities/club.entity';
+import { PaginationQueryDto } from '../common/dto/pagination.dto';
 
 @Controller('clubs')
 export class ClubsController {
@@ -23,8 +26,8 @@ export class ClubsController {
   }
 
   @Get()
-  findAll() {
-    return this.clubsService.findAll();
+  findAll(@Query() query: PaginationQueryDto) {
+    return this.clubsService.findAll(query);
   }
 
   @Get(':id')
@@ -44,7 +47,15 @@ export class ClubsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number) {
-    this.clubsService.remove(id);
+  async remove(@Param('id') id: number) {
+    try {
+      await this.clubsService.remove(id);
+      return { success: true };
+    } catch (error) {
+      if (error.message.includes('Cannot delete club with associated athletes')) {
+        throw new BadRequestException(error.message);
+      }
+      throw error;
+    }
   }
 }

@@ -48,8 +48,12 @@ export class Athlete {
   email: string;
 
   @Column({
-    type: 'timestamptz',
-    nullable: false,
+    type: 'date',
+    nullable: true,
+    transformer: {
+      to: (value: Date | string | null) => value,
+      from: (value: Date | string | null) => value ? value.toString().split('T')[0] : null,
+    },
   })
   birthDate: Date;
 
@@ -58,8 +62,12 @@ export class Athlete {
 
   @Index()
   @Column({
-    type: 'timestamptz',
-    nullable: false,
+    type: 'date',
+    nullable: true,
+    transformer: {
+      to: (value: Date | string | null) => value,
+      from: (value: Date | string | null) => value ? value.toString().split('T')[0] : null,
+    },
   })
   medicalRecordDueDate: Date;
 
