@@ -1,8 +1,8 @@
-import { IsIn, IsString, MaxLength } from '@nestjs/class-validator';
+import { IsIn, IsNumber, IsString, MaxLength } from '@nestjs/class-validator';
 import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { Branches } from '../../branches/branches.enum';
 import { Club } from '../../clubs/entities/club.entity';
 import { Genders } from '../../genders/genders.enum';
+import { Type } from 'class-transformer';
 import { CreateAthleteDto } from './create-athlete.dto';
 
 export class UpdateAthleteDto extends PartialType(CreateAthleteDto) {
@@ -36,10 +36,14 @@ export class UpdateAthleteDto extends PartialType(CreateAthleteDto) {
   @IsIn([Genders.FEMALE, Genders.MALE])
   gender?: Genders;
 
-  @ApiProperty({ enum: [Branches.ARTISTIC, Branches.AEROBIC] })
-  @IsIn([Branches.ARTISTIC, Branches.AEROBIC])
-  branch?: Branches;
+  @ApiProperty()
+  @IsNumber()
+  @Type(() => Number)
+  branchId?: number;
 
   @ApiProperty({ type: Club })
   club?: Club;
+
+  @ApiProperty({ type: String, required: false })
+  imageUrl?: string;
 }

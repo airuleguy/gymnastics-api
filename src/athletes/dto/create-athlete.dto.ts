@@ -1,8 +1,8 @@
-import { IsIn, IsString, MaxLength } from '@nestjs/class-validator';
+import { IsIn, IsNumber, IsString, MaxLength } from '@nestjs/class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { Branches } from '../../branches/branches.enum';
 import { Club } from '../../clubs/entities/club.entity';
 import { Genders } from '../../genders/genders.enum';
+import { Type } from 'class-transformer';
 
 export class CreateAthleteDto {
   @ApiProperty()
@@ -35,9 +35,13 @@ export class CreateAthleteDto {
   @IsIn([Genders.FEMALE, Genders.MALE])
   gender: Genders;
 
-  @ApiProperty({ enum: [Branches.ARTISTIC, Branches.AEROBIC] })
-  @IsIn([Branches.ARTISTIC, Branches.AEROBIC])
-  branch: Branches;
+  @ApiProperty()
+  @IsNumber()
+  @Type(() => Number)
+  branchId: number;
+
+  @ApiProperty({ type: String, required: false })
+  imageUrl?: string;
 
   @ApiProperty({ type: Club })
   club?: Club;

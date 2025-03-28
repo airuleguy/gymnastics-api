@@ -1,4 +1,4 @@
-import { Branches } from '../../branches/branches.enum';
+import { Branch } from '../../branches/branch.entity';
 import { Club } from '../../clubs/entities/club.entity';
 import { Genders } from '../../genders/genders.enum';
 import {
@@ -78,12 +78,16 @@ export class Athlete {
   })
   gender: Genders;
 
-  @Column({
-    type: 'enum',
-    enum: Branches,
-    nullable: false,
+  @ManyToOne(() => Branch, (branch: Branch) => branch.athletes, {
+    nullable: true,
   })
-  branch: Branches;
+  branch: Branch;
+
+  @Column({
+    type: String,
+    nullable: true,
+  })
+  imageUrl: string;
 
   @Index()
   @ManyToOne(() => Club, (club: Club) => club.id, {

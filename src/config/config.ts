@@ -1,4 +1,5 @@
 import { Athlete } from '../athletes/entities/athlete.entity';
+import { Branch } from '../branches/branch.entity';
 import { Club } from '../clubs/entities/club.entity';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
@@ -12,6 +13,6 @@ export const configuration = () => ({
     database: process.env.POSTGRES_DB,
     synchronize: true,
     namingStrategy: new SnakeNamingStrategy(),
-    entities: [Club, Athlete],
+    entities: [Club, Athlete, Branch],
   },
 });

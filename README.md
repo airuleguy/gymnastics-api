@@ -32,6 +32,99 @@
 $ npm install
 ```
 
+## Configuration
+
+### Database
+
+The application uses PostgreSQL as the database. Configure the connection details in the appropriate `.env` file in the `.env` directory.
+
+### File Storage
+
+The application supports two modes of file storage:
+
+#### Local Storage (Development)
+
+By default, files are stored locally in the `./uploads` directory. This mode is enabled by setting:
+
+```
+STORAGE_MODE=local
+API_BASE_URL=http://localhost:3001
+```
+
+#### AWS S3 Storage (Production)
+
+For production, the application can store files in Amazon S3. To enable this mode, set the following environment variables:
+
+```
+STORAGE_MODE=s3
+AWS_REGION=your-region
+AWS_S3_BUCKET=your-bucket-name
+AWS_ACCESS_KEY_ID=your-access-key
+AWS_SECRET_ACCESS_KEY=your-secret-key
+AWS_S3_URL=optional-custom-url
+```
+
+The `AWS_S3_URL` is optional. If not provided, the URL will be constructed using the bucket name and region.
+
+##### Setting up S3 Bucket
+
+1. **Create an S3 bucket**: In the AWS console, create a new S3 bucket with a name that matches your `AWS_S3_BUCKET` value.
+
+2. **Enable public access**: For the bucket to serve images publicly, you need to:
+   - Disable "Block all public access" in bucket settings
+   - Create a bucket policy that allows public read access
+
+   Example bucket policy:
+   ```json
+   {
+     "Version": "2012-10-17",
+     "Statement": [
+       {
+         "Effect": "Allow",
+         "Principal": "*",
+         "Action": "s3:GetObject",
+         "Resource": "arn:aws:s3:::your-bucket-name/*"
+       }
+     ]
+   }
+   ```
+
+3. **Create IAM user**: Create an IAM user with programmatic access and attach a policy granting S3 access to your bucket.
+   
+   Minimum required permissions:
+   ```json
+   {
+     "Version": "2012-10-17",
+     "Statement": [
+       {
+         "Effect": "Allow",
+         "Action": [
+           "s3:PutObject",
+           "s3:GetObject",
+           "s3:DeleteObject",
+           "s3:ListBucket"
+         ],
+         "Resource": [
+           "arn:aws:s3:::your-bucket-name",
+           "arn:aws:s3:::your-bucket-name/*"
+         ]
+       }
+     ]
+   }
+   ```
+
+4. **Set up CORS**: To allow frontend access to files, enable CORS on your S3 bucket:
+   ```json
+   [
+     {
+       "AllowedHeaders": ["*"],
+       "AllowedMethods": ["GET", "PUT", "POST", "DELETE", "HEAD"],
+       "AllowedOrigins": ["*"],
+       "ExposeHeaders": []
+     }
+   ]
+   ```
+
 ## Running the app
 
 ```bash

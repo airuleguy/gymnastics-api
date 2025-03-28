@@ -7,11 +7,20 @@ import {
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { TypeORMExceptionFilter } from './exceptions/filters/exceptions.filters.db';
+import multipart from '@fastify/multipart';
 
 async function bootstrap() {
+  const fastifyAdapter = new FastifyAdapter();
+  // Register multipart plugin directly on the Fastify instance
+  await fastifyAdapter.register(multipart, {
+    limits: {
+      fileSize: 5 * 1024 * 1024, // 5MB
+    },
+  });
+
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter(),
+    fastifyAdapter,
   );
 
   app.useGlobalPipes(new ValidationPipe());

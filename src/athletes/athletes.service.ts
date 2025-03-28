@@ -5,6 +5,7 @@ import { CreateAthleteDto } from './dto/create-athlete.dto';
 import { UpdateAthleteDto } from './dto/update-athlete.dto';
 import { Athlete } from './entities/athlete.entity';
 import { ClubsService } from '../clubs/clubs.service';
+import { BranchesService } from '../branches/branches.service';
 import { PageDto, PaginationQueryDto } from '../common/dto/pagination.dto';
 
 @Injectable()
@@ -13,6 +14,7 @@ export class AthletesService {
     @InjectRepository(Athlete)
     private athleteRepository: Repository<Athlete>,
     private clubsService: ClubsService,
+    private branchesService: BranchesService,
   ) {}
 
   async create(createAthleteDto: CreateAthleteDto) {
@@ -26,7 +28,23 @@ export class AthletesService {
       createAthleteDto.club = { id: club.id } as any;
     }
     
-    return this.athleteRepository.save(createAthleteDto as Athlete);
+    // Find branch by ID
+    if (createAthleteDto.branchId) {
+      const branch = await this.branchesService.findOne(createAthleteDto.branchId);
+      if (!branch) {
+        throw new BadRequestException('Branch not found with the provided ID');
+      }
+      
+      // Create athlete with branch reference
+      const athlete = this.athleteRepository.create({
+        ...createAthleteDto,
+        branch: branch,
+      });
+      
+      return this.athleteRepository.save(athlete);
+    }
+    
+    throw new BadRequestException('Branch ID is required');
   }
 
   async findAll(query: PaginationQueryDto): Promise<PageDto<Athlete>> {
@@ -34,7 +52,8 @@ export class AthletesService {
     
     // Create base query
     const queryBuilder = this.athleteRepository.createQueryBuilder('athlete')
-      .leftJoinAndSelect('athlete.club', 'club');
+      .leftJoinAndSelect('athlete.club', 'club')
+      .leftJoinAndSelect('athlete.branch', 'branch');
     
     // Add search condition if provided
     if (search) {
@@ -74,6 +93,7 @@ export class AthletesService {
     // Create base query with club filter
     const queryBuilder = this.athleteRepository.createQueryBuilder('athlete')
       .leftJoinAndSelect('athlete.club', 'club')
+      .leftJoinAndSelect('athlete.branch', 'branch')
       .where('club.id = :clubId', { clubId });
     
     // Add search condition if provided
@@ -110,7 +130,7 @@ export class AthletesService {
   findOne(id: number) {
     return this.athleteRepository.findOne({
       where: { id },
-      relations: ['club']
+      relations: ['club', 'branch']
     });
   }
 
@@ -131,6 +151,23 @@ export class AthletesService {
       updateAthleteDto.club = { id: club.id } as any;
     }
     
+    // If branch is being updated, validate and get the branch
+    if (updateAthleteDto.branchId) {
+      const branch = await this.branchesService.findOne(updateAthleteDto.branchId);
+      if (!branch) {
+        throw new BadRequestException('Branch not found with the provided ID');
+      }
+      
+      // Update with new athlete data
+      return this.athleteRepository.save({
+        ...athlete,
+        ...updateAthleteDto,
+        branch: branch,
+        id: id
+      });
+    }
+    
+    // Update without changing branch
     return this.athleteRepository.save({
       ...athlete,
       ...updateAthleteDto,
