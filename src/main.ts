@@ -32,10 +32,10 @@ async function bootstrap() {
   });
 
   const config = new DocumentBuilder()
-    .setTitle('Gymnasts API')
-    .setDescription('CRUD of gymnasts')
+    .setTitle('Athletes API')
+    .setDescription('CRUD of athletes')
     .setVersion('1.0')
-    .addTag('gymnasts')
+    .addTag('athletes')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
